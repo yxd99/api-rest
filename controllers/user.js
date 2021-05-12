@@ -48,9 +48,11 @@ const putUser = async (req, res = response) => {
 
 const deleteUser = async (req, res = response) => {
   const { id } = req.params;
+  const userAuth = req.userAuth;
   const user = await User.findByIdAndUpdate(id, { state: false });
   res.json({
-    user
+    user,
+    userAuth
   });
 };
 

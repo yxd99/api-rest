@@ -7,6 +7,7 @@ class Server {
   constructor() {
     this.port = process.env.PORT;
     this.app = express();
+    this.pathAuth = '/api/auth';
     this.pathUser = '/api/user';
     this.connectBD();
     this.middlewares();
@@ -23,6 +24,7 @@ class Server {
   }
 
   routes() {
+    this.app.use(this.pathAuth, require('../routes/auth'));
     this.app.use(this.pathUser, require('../routes/user'));
     this.app.use('*', (req, res) => {
       res.status(404).send('File not found.');
