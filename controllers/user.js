@@ -32,6 +32,7 @@ const postUser = async (req, res = response) => {
   await user.save();
   res.json(user);
 };
+
 const putUser = async (req, res = response) => {
   const { id } = req.params;
   const { _id, password, google, email, ...info } = req.body;
@@ -45,8 +46,17 @@ const putUser = async (req, res = response) => {
   });
 };
 
+const deleteUser = async (req, res = response) => {
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate(id, { state: false });
+  res.json({
+    user
+  });
+};
+
 module.exports = {
   getUser,
   postUser,
-  putUser
+  putUser,
+  deleteUser
 };
