@@ -19,7 +19,8 @@ const UserSchema = Schema({
   role: {
     type: String,
     required: true,
-    emun: ['admin', 'user']
+    default: 'user',
+    enum: ['admin', 'user']
   },
   state: {
     type: Boolean,

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta name="google-signin-client_id" content="1076571613959-v8useg5m35e9f5cra8gultlpbiilvpt5.apps.googleusercontent.com">
+</head>
+<body>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            const url = (window.location.hostname.includes('localhost')) 
+                ? 'http://localhost:8080/api/auth/google'
+                : 'https://coffee-api-rest-yxd.herokuapp.com/api/auth/google';
+            var profile = googleUser.getBasicProfile();
+            const idToken = googleUser.getAuthResponse().id_token;
+            const data = { idToken }
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(resp => resp.json())
+            .then(console.log)
+            .catch(console.log)
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+    </script>
+</body>
+</html>
