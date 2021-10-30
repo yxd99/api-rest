@@ -8,8 +8,11 @@
     <meta name="google-signin-client_id" content="1076571613959-v8useg5m35e9f5cra8gultlpbiilvpt5.apps.googleusercontent.com">
 </head>
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <a href="#" onclick="signOut();">Sign out</a>
+    <div>
+        <h1 id="username"></h1>
+    </div>
+    <div class="g-signin2" id="login" data-onsuccess="onSignIn"></div>
+    <a href="#" id="logout" style="display: block;" onclick="signOut();">Sign out</a>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script>
@@ -28,13 +31,27 @@
                 body: JSON.stringify(data)
             })
             .then(resp => resp.json())
-            .then(console.log)
+            .then(resp => {
+                const logout = document.getElementById("logout");
+                logout.style.display = 'block';
+                const login = document.getElementById("login");
+                login.style.display = 'none';
+                const username = document.getElementById("username");
+                username.innerHTML = resp.email;
+                return console.log(resp);
+            })
             .catch(console.log)
         }
 
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
+                const logout = document.getElementById("logout");
+                logout.style.display = 'none';
+                const login = document.getElementById("login");
+                login.style.display = 'block';
+                const username = document.getElementById("username");
+                username.innerHTML = "";
                 console.log('User signed out.');
             });
         }
